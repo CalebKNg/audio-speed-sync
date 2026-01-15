@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Slot, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 
 export default function RootLayout() {
     return (
@@ -13,7 +13,7 @@ export default function RootLayout() {
                 headerTintColor: "#fff",
                 tabBarStyle: {
                     backgroundColor: "#25292e"
-                }
+                },
             }}
         >
             <Tabs.Screen
@@ -26,15 +26,23 @@ export default function RootLayout() {
                 }}
             />
             <Tabs.Screen
-                name="songs"
+                name="search"
                 options={{
-                    title: "Songs",
+                    title: "Search",
                     tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24} />
+                        <Ionicons name={focused ? 'search' : 'search-outline'} color={color} size={24} />
                     )
                 }}
             />
-            <Slot />
+            <Tabs.Screen
+                name="library"
+                options={{
+                    title: "Library",
+                    tabBarIcon: ({ color, focused }) => (
+                        <Ionicons name={focused ? 'list' : 'list-outline'} color={color} size={24} />
+                    )
+                }}
+            />
         </Tabs>
     )
 }

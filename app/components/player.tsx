@@ -1,43 +1,63 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Slider from '@react-native-community/slider';
-import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { PropsWithChildren, useState } from "react";
+import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function Player() {
+type Props = PropsWithChildren<{
+    isVisible: boolean;
+    onClose: () => void;
+}>;
+
+export default function Player({ isVisible, onClose }: Props) {
     const [play, setPlay] = useState(true);
     const buttonColor = "#fff";
+
     return (
-        <View style={styles.container}>
-            <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
-            <View style={styles.trackInfo}>
-                <Text style={styles.title}>Meidei</Text>
-                <Text style={styles.artist}>Radwimps</Text>
+        <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Pressable onPressOut={onClose} style={{ padding: 12 }}>
+                        <Ionicons name='chevron-down' size={32} color={buttonColor} />
+                    </Pressable>
+                </View>
+                <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
+                <View style={styles.trackInfo}>
+                    <Text style={styles.title}>Meidei</Text>
+                    <Text style={styles.artist}>Radwimps</Text>
+                </View>
+                <Slider
+                    style={styles.slider}
+                    minimumTrackTintColor="#FFFFFF"
+                    maximumTrackTintColor="#000000"
+                    thumbTintColor="#FFFFFF"
+                />
+                <View style={styles.controls}>
+                    <Pressable>
+                        <Ionicons name="play-skip-back" size={32} color={buttonColor} />
+                    </Pressable>
+                    <Pressable onPressOut={() => setPlay(!play)}>
+                        {play ?
+                            <Ionicons name="play-circle" size={64} color={buttonColor} />
+                            :
+                            <Ionicons name="pause-circle" size={64} color={buttonColor} />
+                        }
+                    </Pressable>
+                    <Pressable>
+                        <Ionicons name="play-skip-forward" size={32} color={buttonColor} />
+                    </Pressable>
+                </View>
             </View>
-            <Slider
-                style={styles.slider}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
-                thumbTintColor="#FFFFFF"
-            />
-            <View style={styles.controls}>
-                <Pressable>
-                    <Ionicons name="play-skip-back-circle" size={32} color={buttonColor} />
-                </Pressable>
-                <Pressable onPressOut={() => setPlay(!play)}>
-                    {play ?
-                        <Ionicons name="play-circle" size={64} color={buttonColor} />
-                        :
-                        <Ionicons name="pause-circle" size={64} color={buttonColor} />
-                    }
-                </Pressable>
-                <Pressable>
-                    <Ionicons name="play-skip-forward-circle" size={32} color={buttonColor} />
-                </Pressable>
-            </View>
-        </View>
+        </Modal>
     )
 }
 const styles = StyleSheet.create({
+    header: {
+        flexDirection: 'row',
+        position: 'absolute',
+        top: 16,
+        left: 16,
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         backgroundColor: '#25292e',
@@ -54,7 +74,7 @@ const styles = StyleSheet.create({
     },
     trackInfo: {
         width: '80%',
-        flex: 0.1,
+        // flex: 0.1,
         margin: 16,
         alignItems: "flex-start"
     },
