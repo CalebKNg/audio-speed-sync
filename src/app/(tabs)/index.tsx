@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import MiniPlayer from "../components/miniPlayer";
-import Player from "../components/player";
-import { common } from "../styles/common";
+import MiniPlayer from "../../components/miniPlayer";
+import Player from "../../components/player";
+import { common } from "../../styles/common";
 
 export default function Index() {
   const router = useRouter();

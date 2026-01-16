@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { common } from "../styles/common";
+import { common } from "../../styles/common";
 export default function Library() {
     return (
         <View style={common.pageView}>

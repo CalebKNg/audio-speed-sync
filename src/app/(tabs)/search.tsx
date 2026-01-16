@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
-import { common } from "../styles/common";
+import { common } from "../../styles/common";
 
 type ItemProps = { title: string };
 

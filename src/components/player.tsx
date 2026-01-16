@@ -28,7 +28,7 @@ export default function Player({ isVisible, onClose }: Props) {
                 <Slider
                     style={styles.slider}
                     minimumTrackTintColor="#FFFFFF"
-                    maximumTrackTintColor="#000000"
+                    maximumTrackTintColor='#808080'
                     thumbTintColor="#FFFFFF"
                 />
                 <View style={styles.controls}>
