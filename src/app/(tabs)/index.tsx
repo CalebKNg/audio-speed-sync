@@ -5,16 +5,26 @@ import MiniPlayer from "../../components/miniPlayer";
 import Player from "../../components/player";
 import { common } from "../../styles/common";
 
+// Redux imports
+import { hide, show } from "../features/player/playerSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
+
 export default function Index() {
+  // redux
+  const dispatch = useAppDispatch();
+  const isExpanded = useAppSelector(state => state.player.visible)
+
   const router = useRouter();
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   return (
     <View style={common.pageView}>
-      {/* <Button title="Player" onPress={() => setIsVisible(!isVisible)} /> */}
       <View></View>
-      <Player isVisible={isVisible} onClose={() => setIsVisible(!isVisible)} />
-      <MiniPlayer onPress={() => setIsVisible(!isVisible)} />
+      {/* <Player isVisible={isVisible} onClose={() => setIsVisible(!isVisible)} /> */}
+      <Player isVisible={isExpanded} onClose={() => dispatch(hide())} />
+
+      {/* <MiniPlayer onPress={() => setIsVisible(!isVisible)} /> */}
+      <MiniPlayer onPress={() => dispatch(show())} />
     </View>
   );
 }
