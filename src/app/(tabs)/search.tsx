@@ -1,5 +1,3 @@
-import MiniPlayer from '@/src/components/miniPlayer';
-import Player from '@/src/components/player';
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import { common } from "../../styles/common";
@@ -55,6 +53,7 @@ export default function Search() {
                     style={styles.searchInput}
                     value={searchParam}
                     placeholder='What do you want to listen to?'
+
                 />
             </View>
             <FlatList
@@ -63,8 +62,6 @@ export default function Search() {
                 keyboardDismissMode="on-drag"
                 style={styles.list}
             />
-            <Player />
-            <MiniPlayer />
         </View>
     )
 }
@@ -75,14 +72,16 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         // marginBottom: 20,
         height: 50,
-        // width: '100%',
+        width: '100%',
+        justifyContent: 'center'
         // flex: .1,
     },
     searchInput: {
         backgroundColor: '#fff',
         flex: .95,
         borderRadius: 5,
-
+        // to bump the placeholder a bit ot the right
+        paddingLeft: 10,
         // flex: .5
         // height: 50,
         // width: 50,

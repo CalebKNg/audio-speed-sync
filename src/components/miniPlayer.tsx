@@ -1,19 +1,16 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Image, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
-
+// import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 // redux
 import { show } from '../app/features/player/playerSlice';
-import { useAppDispatch } from '../app/hooks';
-
-type Props = {
-    style?: StyleProp<ViewStyle>;
-    onPress: () => void;
-};
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 
 export default function MiniPlayer() {
     const dispatch = useAppDispatch();
+
+    const tabHeight = useAppSelector(state => state.ui.tabHeight);
     return (
-        <Pressable style={styles.container} onPress={() => dispatch(show())}>
+        <Pressable style={[styles.container, { bottom: tabHeight }]} onPress={() => dispatch(show())}>
             <View style={styles.info}>
                 <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
                 <View style={styles.infoText} >
@@ -28,6 +25,16 @@ export default function MiniPlayer() {
 }
 
 const styles = StyleSheet.create({
+    // container: {
+    //     width: '98%',
+    //     // flex: 0.1,
+    //     height: 70,
+    //     flexDirection: 'row',
+    //     backgroundColor: '#FFF',
+    //     borderRadius: 8,
+    //     justifyContent: 'space-between',
+    //     alignItems: 'center'
+    // },
     container: {
         width: '98%',
         // flex: 0.1,
@@ -36,7 +43,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderRadius: 8,
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+
+        // positioning
+        position: 'absolute',
+        // bottom is handled within the JS upstairs
+        alignSelf: 'center',
+        zIndex: 1000
     },
     cover: {
         width: 'auto',
