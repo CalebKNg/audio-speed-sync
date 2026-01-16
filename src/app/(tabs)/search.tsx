@@ -1,3 +1,5 @@
+import MiniPlayer from '@/src/components/miniPlayer';
+import Player from '@/src/components/player';
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import { common } from "../../styles/common";
@@ -61,6 +63,8 @@ export default function Search() {
                 keyboardDismissMode="on-drag"
                 style={styles.list}
             />
+            <Player />
+            <MiniPlayer />
         </View>
     )
 }

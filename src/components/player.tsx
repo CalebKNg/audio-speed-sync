@@ -3,20 +3,27 @@ import Slider from '@react-native-community/slider';
 import { PropsWithChildren, useState } from "react";
 import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
+//redux
+import { hide } from "../app/features/player/playerSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+
 type Props = PropsWithChildren<{
     isVisible: boolean;
     onClose: () => void;
 }>;
 
-export default function Player({ isVisible, onClose }: Props) {
+export default function Player() {
     const [play, setPlay] = useState(true);
     const buttonColor = "#fff";
 
+    const dispatch = useAppDispatch();
+    const isExpanded = useAppSelector(state => state.player.visible);
+
     return (
-        <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
+        <Modal animationType="slide" transparent={true} visible={isExpanded} onRequestClose={() => dispatch(hide())}>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Pressable onPressOut={onClose} style={{ padding: 12 }}>
+                    <Pressable onPressOut={() => dispatch(hide())} style={{ padding: 12 }}>
                         <Ionicons name='chevron-down' size={32} color={buttonColor} />
                     </Pressable>
                 </View>

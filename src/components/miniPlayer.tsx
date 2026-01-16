@@ -1,17 +1,22 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
+// redux
+import { show } from '../app/features/player/playerSlice';
+import { useAppDispatch } from '../app/hooks';
+
 type Props = {
     style?: StyleProp<ViewStyle>;
     onPress: () => void;
 };
 
-export default function MiniPlayer({ style, onPress }: Props) {
+export default function MiniPlayer() {
+    const dispatch = useAppDispatch();
     return (
-        <Pressable style={styles.container} onPress={onPress}>
+        <Pressable style={styles.container} onPress={() => dispatch(show())}>
             <View style={styles.info}>
                 <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
-                <View >
+                <View style={styles.infoText} >
                     <Text style={styles.title}>Meidei</Text>
                     <Text>Radwimps</Text>
                 </View>
@@ -25,7 +30,8 @@ export default function MiniPlayer({ style, onPress }: Props) {
 const styles = StyleSheet.create({
     container: {
         width: '98%',
-        flex: 0.1,
+        // flex: 0.1,
+        height: 70,
         flexDirection: 'row',
         backgroundColor: '#FFF',
         borderRadius: 8,
@@ -45,6 +51,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: .5,
         justifyContent: 'flex-start'
+    },
+    infoText: {
+        justifyContent: 'center'
     },
     title: {
         color: '#25292e',
