@@ -1,6 +1,8 @@
+import * as MediaLibrary from 'expo-media-library';
 import { useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import { common } from "../../styles/common";
+import { searchLibrary } from '../features/scanner/scanLibrary';
 
 type ItemProps = { title: string };
 
@@ -46,6 +48,14 @@ const DATA = [
 
 export default function Search() {
     const [searchParam, setSearchParam] = useState("");
+
+    const [mediaFiles, setMediaFiles] = useState<MediaLibrary.Asset[]>([]);
+
+    const handleSearch = async () => {
+        const files = await searchLibrary();
+        setMediaFiles(files);
+    }
+
     return (
         <View style={common.pageView} >
             <View style={styles.searchSpan}>
@@ -53,12 +63,14 @@ export default function Search() {
                     style={styles.searchInput}
                     value={searchParam}
                     placeholder='What do you want to listen to?'
-
                 />
             </View>
+            <Button title="search again" onPress={handleSearch} />
             <FlatList
-                data={DATA}
-                renderItem={({ item }) => <Item title={item.title} />}
+                // data={DATA}
+                data={mediaFiles}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => <Item title={item.filename} />}
                 keyboardDismissMode="on-drag"
                 style={styles.list}
             />
