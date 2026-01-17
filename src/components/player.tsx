@@ -20,18 +20,23 @@ export default function Player() {
     const isExpanded = useAppSelector(state => state.player.visible);
 
     return (
+        // return modal so it sits on top
         <Modal animationType="slide" transparent={true} visible={isExpanded} onRequestClose={() => dispatch(hide())}>
+            {/* main view */}
             <View style={styles.container}>
+                {/*  header for the back button for now */}
                 <View style={styles.header}>
                     <Pressable onPressOut={() => dispatch(hide())} style={{ padding: 12 }}>
                         <Ionicons name='chevron-down' size={32} color={buttonColor} />
                     </Pressable>
                 </View>
+                {/*  main image */}
                 <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
                 <View style={styles.trackInfo}>
                     <Text style={styles.title}>Meidei</Text>
                     <Text style={styles.artist}>Radwimps</Text>
                 </View>
+                {/* scrubber */}
                 <Slider
                     style={styles.slider}
                     minimumTrackTintColor="#FFFFFF"
@@ -39,7 +44,7 @@ export default function Player() {
                     thumbTintColor="#FFFFFF"
                 />
                 <View style={styles.controls}>
-                    <Pressable>
+                    <Pressable onPressOut={() => console.log("hi")}>
                         <Ionicons name="play-skip-back" size={32} color={buttonColor} />
                     </Pressable>
                     <Pressable onPressOut={() => setPlay(!play)}>

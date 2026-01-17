@@ -25,16 +25,6 @@ export default function MiniPlayer() {
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     width: '98%',
-    //     // flex: 0.1,
-    //     height: 70,
-    //     flexDirection: 'row',
-    //     backgroundColor: '#FFF',
-    //     borderRadius: 8,
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center'
-    // },
     container: {
         width: '98%',
         // flex: 0.1,
