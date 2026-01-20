@@ -73,6 +73,7 @@ export default function Search() {
                 renderItem={({ item }) => <Item title={item.title} onPress={() => loadTrack(item.uri, item.title,)} />}
                 keyboardDismissMode="on-drag"
                 style={styles.list}
+                contentContainerStyle={{ paddingBottom: 80 }}
             />
         </View>
     )
