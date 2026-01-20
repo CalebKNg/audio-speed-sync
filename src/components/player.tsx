@@ -16,7 +16,7 @@ type Props = PropsWithChildren<{
 
 export default function Player() {
     // const [play, setPlay] = useState(true);
-    const { isPlaying, currentTime, duration, play, pause } = useAudio();
+    const { isPlaying, currentTime, duration, play, pause, seek } = useAudio();
     const buttonColor = "#fff";
 
     const dispatch = useAppDispatch();
@@ -49,6 +49,7 @@ export default function Player() {
                     maximumValue={duration}
                     value={currentTime}
                     step={0.01}
+                    onSlidingComplete={seek}
                 />
                 <View style={styles.controls}>
                     <Pressable onPressOut={() => console.log("hi")}>

@@ -12,7 +12,7 @@ interface AudioPlayerContextType {
     play: () => void,
     stop: () => void,
     pause: () => void,
-    // seek: () => void,
+    seek: (time: number) => void,
 
 }
 
@@ -89,13 +89,11 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         if (!ctx || !audioBufferRef.current) {
             return;
         }
-        // console.log("plady");
 
         // if already playing do nothing
         if (bufferSourceRef.current) {
             return;
         }
-        // console.log("play");
         const source = await ctx.createBufferSource();
 
         source.buffer = audioBufferRef.current;
@@ -139,7 +137,24 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         setIsPlaying(false);
     }, []);
 
-    // const seek = (time) => { }
+    const seek = useCallback((time: number) => {
+        const wasPlaying = isPlaying;
+
+        if (bufferSourceRef.current) {
+            bufferSourceRef.current.onEnded = null;
+            bufferSourceRef.current.stop();
+            bufferSourceRef.current = null;
+        }
+
+        pauseTimeRef.current = Math.max(0, Math.min(time, duration));
+        setCurrentTime(pauseTimeRef.current);
+        setIsPlaying(false);
+
+        if (wasPlaying) {
+            // Resume playing from new position
+            play();
+        }
+    }, [isPlaying, duration, play]);
 
     // slider
     useEffect(() => {
@@ -178,7 +193,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         play,
         pause,
         stop,
-        // seek,
+        seek,
         // setPlaybackRate,
         // setDetune,
     };
