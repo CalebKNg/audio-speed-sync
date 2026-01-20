@@ -14,6 +14,9 @@ interface AudioPlayerContextType {
     pause: () => void,
     seek: (time: number) => void,
 
+    setPlaybackRate: (rate: number) => void,
+    setDetune: (cents: number) => void,
+
 }
 
 const AudioContext = createContext<AudioPlayerContextType | undefined>(undefined);
@@ -32,10 +35,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     // define some states
     const [isPlaying, setIsPlaying] = useState(false);
     const [duration, setDuration] = useState(0);
-    const [position, setPosition] = useState(0)
     const [currentTrack, setCurrentTrack] = useState("");
     const [currentTime, setCurrentTime] = useState(0);
 
+    // for the transforms
+    const [playbackRate, setPlaybackRate] = useState(0);
+    const [detune, setDetune] = useState(0);
 
     // this on on init i guess
     useEffect(() => {
@@ -178,6 +183,29 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
     }, [isPlaying, duration]);
 
+    // effects
+    useEffect(() => {
+        const source = bufferSourceRef.current;
+        const ctx = audioContextRef.current;
+        if (!source || !ctx) {
+            return;
+        }
+
+        const RAMP_TIME = 0.05;
+
+        source.playbackRate.setValueAtTime(
+            playbackRate,
+            ctx.currentTime + RAMP_TIME
+        );
+        source.detune.setValueAtTime(
+            detune,
+            ctx.currentTime + RAMP_TIME
+        );
+
+
+    }, [playbackRate, detune])
+
+
     const value: AudioPlayerContextType = {
         isPlaying,
         // isLoading,
@@ -191,8 +219,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         pause,
         stop,
         seek,
-        // setPlaybackRate,
-        // setDetune,
+        setPlaybackRate,
+        setDetune,
     };
     return (
         <AudioContext.Provider value={value}>
