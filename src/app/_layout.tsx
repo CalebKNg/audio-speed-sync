@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { useEffect } from "react";
 import { StyleSheet, View } from 'react-native';
 // import 'react-native-polyfill-globals/auto';
 import { Buffer } from 'buffer';
@@ -6,10 +7,21 @@ import { Provider } from "react-redux";
 import { AudioProvider } from "../components/audioProvider";
 import MiniPlayer from "../components/miniPlayer";
 import Player from "../components/player";
+import { startLocationTracking, stopLocationTracking } from '../services/location';
 import { store } from "../store/store";
+
+
 
 (global as any).Buffer = Buffer; // make Buffer available globally
 export default function RootLayout() {
+
+  // maybe put location tracking here?
+  useEffect(() => {
+    startLocationTracking();
+    return () => void stopLocationTracking();
+  }, []);
+
+
   return (
     <AudioProvider>
       <Provider store={store}>

@@ -54,7 +54,15 @@
           ]
         }
       ],
-      "react-native-audio-api"
+      [
+        "react-native-audio-api"
+      ],
+      [
+        "expo-location",
+        {
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

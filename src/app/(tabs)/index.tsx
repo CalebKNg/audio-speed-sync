@@ -3,8 +3,8 @@ import Slider from "@react-native-community/slider";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import { useAppDispatch } from "../../store/hooks";
+import { StyleSheet, Text, View } from "react-native";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setTabHeight } from "../../store/slices/uiSlice";
 import { common } from "../../styles/common";
 
@@ -19,10 +19,10 @@ export default function Index() {
   useEffect(() => {
     dispatch(setTabHeight(tabHeight));
   }, [tabHeight]);
-
+  const speed = useAppSelector(state => state.location.speed);
   return (
     <View style={common.pageView}>
-
+      <Text style={{ color: '#FFF' }}>{speed}</Text>
       <Slider
         style={{
           width: '85%',
