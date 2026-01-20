@@ -109,14 +109,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         const source = await ctx.createBufferSource();
 
         source.buffer = audioBufferRef.current;
-        // source.playbackRate.value = playbackRate;
-        // source.detune.value = detune;
+        source.playbackRate.value = playbackRate;
+        source.detune.value = detune;
         // source.loop = loop;
         // source.loopStart = loopStart;
         // source.loopEnd = loopEnd;
 
         await ctx.resume();
         source.connect(ctx.destination);
+
         const offset = pauseTimeRef.current;
         source.start(0, offset);
 
