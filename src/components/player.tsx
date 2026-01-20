@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Slider from '@react-native-community/slider';
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useAudio } from "./audioProvider";
@@ -14,10 +14,22 @@ type Props = PropsWithChildren<{
     onClose: () => void;
 }>;
 
+function formatTime(seconds: number) {
+    if (isNaN(seconds)) return "0:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
 export default function Player() {
     // const [play, setPlay] = useState(true);
     const { isPlaying, currentTime, duration, play, pause, seek } = useAudio();
     const buttonColor = "#fff";
+
+    // for the slider and local number updating: localTime is the value the user is currently dragging the slider to
+    const [localTime, setLocalTime] = useState(currentTime);
+    const [isSliding, setIsSliding] = useState(false);
+
 
     const dispatch = useAppDispatch();
     const isExpanded = useAppSelector(state => state.player.visible);
@@ -49,19 +61,19 @@ export default function Player() {
                     maximumValue={duration}
                     value={currentTime}
                     step={0.01}
-                    onSlidingComplete={seek}
+                    onSlidingComplete={(time) => { setIsSliding(false); seek(time) }}
+                    onSlidingStart={() => setIsSliding(true)}
+                    onValueChange={(time) => setLocalTime(time)}
                 />
+                {/* for the time */}
+                <View style={styles.time}>
+                    <Text style={{ color: '#FFF' }}>{formatTime(isSliding ? localTime : currentTime)}</Text>
+                    <Text style={{ color: '#FFF' }}>{formatTime(duration)}</Text>
+                </View>
                 <View style={styles.controls}>
                     <Pressable onPressOut={() => console.log("hi")}>
                         <Ionicons name="play-skip-back" size={32} color={buttonColor} />
                     </Pressable>
-                    {/* <Pressable onPressOut={() => play}>
-                        {isPlaying ?
-                            <Ionicons name="play-circle" size={64} color={buttonColor} />
-                            :
-                            <Ionicons name="pause-circle" size={64} color={buttonColor} />
-                        }
-                    </Pressable> */}
                     {isPlaying ?
                         <Pressable onPressOut={pause}>
                             <Ionicons name="pause-circle" size={64} color={buttonColor} />
@@ -115,9 +127,12 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         opacity: .75,
     },
+    time: {
+        flexDirection: 'row', justifyContent: "space-between", width: "75%"
+    },
     slider: {
-        width: '80%',
-        margin: 16,
+        width: '85%',
+        marginHorizontal: 16,
     },
     controls: {
         flexDirection: 'row',
