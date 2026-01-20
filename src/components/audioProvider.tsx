@@ -59,14 +59,21 @@ export function AudioProvider({ children }: { children: ReactNode }) {
             if (!response.ok) {
                 throw new Error(`Failed to fetch audio: ${response.status}`);
             }
+            // console.log(1)
             const arrayBuffer = await response.arrayBuffer();
+            // console.log(2)
             const decoded = await audioContextRef.current.decodeAudioData(arrayBuffer);
-
+            // console.log(3)
             audioBufferRef.current = decoded;
 
             // set the current track and duration
             setCurrentTrack(title)
             setDuration(decoded.duration)
+
+            setCurrentTime(0);
+            pauseTimeRef.current = 0;
+            stop();
+            play();
         }
         catch (err) {
             console.warn("error loading track", err);
@@ -124,31 +131,21 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         if (!bufferSourceRef.current || !audioContextRef.current) {
             return;
         }
-        console.log("pause")
         // Calculate where we are in the audio
         const elapsed = audioContextRef.current.currentTime - startTimeRef.current;
         pauseTimeRef.current = pauseTimeRef.current + elapsed;
         setCurrentTime(pauseTimeRef.current);
 
         // Stop the current source
-        bufferSourceRef.current.onEnded = null;
-        bufferSourceRef.current.stop();
-        bufferSourceRef.current = null;
-        setIsPlaying(false);
+        stop();
     }, []);
 
     const seek = useCallback((time: number) => {
         const wasPlaying = isPlaying;
-
-        if (bufferSourceRef.current) {
-            bufferSourceRef.current.onEnded = null;
-            bufferSourceRef.current.stop();
-            bufferSourceRef.current = null;
-        }
-
+        stop();
+        // need to recalculate pausetime 
         pauseTimeRef.current = Math.max(0, Math.min(time, duration));
         setCurrentTime(pauseTimeRef.current);
-        setIsPlaying(false);
 
         if (wasPlaying) {
             // Resume playing from new position
