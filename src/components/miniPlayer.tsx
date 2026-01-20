@@ -4,22 +4,33 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 // redux
 import { show } from '../app/features/player/playerSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAudio } from './audioProvider';
 
 export default function MiniPlayer() {
     const dispatch = useAppDispatch();
-
+    const { currentTrack, isPlaying, play, pause } = useAudio();
     const tabHeight = useAppSelector(state => state.ui.tabHeight);
     return (
         <Pressable style={[styles.container, { bottom: tabHeight }]} onPress={() => dispatch(show())}>
             <View style={styles.info}>
                 <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
                 <View style={styles.infoText} >
-                    <Text style={styles.title}>Meidei</Text>
+                    <Text style={styles.title}>{currentTrack}</Text>
                     <Text>Radwimps</Text>
                 </View>
             </View>
 
-            <Ionicons name="play" size={32} style={{ marginRight: 10 }} />
+
+            {isPlaying ?
+                <Pressable onPressOut={pause}>
+                    <Ionicons name="pause" size={32} style={{ marginRight: 10 }} />
+                </Pressable>
+                :
+                <Pressable onPressOut={play}>
+                    <Ionicons name="play" size={32} style={{ marginRight: 10 }} />
+                </Pressable>
+            }
+
         </Pressable>
     );
 }

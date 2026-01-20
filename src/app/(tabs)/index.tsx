@@ -6,6 +6,7 @@ import { common } from "../../styles/common";
 import { setTabHeight } from "../features/ui/uiSlice";
 import { useAppDispatch } from "../hooks";
 
+
 export default function Index() {
   const router = useRouter();
   // set bar height
@@ -18,7 +19,9 @@ export default function Index() {
 
   return (
     <View style={common.pageView}>
-      <View></View>
+      <View>
+        {/* <AudioPlayer /> */}
+      </View>
     </View>
   );
 }

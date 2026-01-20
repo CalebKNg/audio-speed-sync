@@ -1,7 +1,9 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Slider from '@react-native-community/slider';
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+
+import { useAudio } from "./audioProvider";
 
 //redux
 import { hide } from "../app/features/player/playerSlice";
@@ -13,7 +15,8 @@ type Props = PropsWithChildren<{
 }>;
 
 export default function Player() {
-    const [play, setPlay] = useState(true);
+    // const [play, setPlay] = useState(true);
+    const { isPlaying, currentTime, duration, play, pause } = useAudio();
     const buttonColor = "#fff";
 
     const dispatch = useAppDispatch();
@@ -42,18 +45,31 @@ export default function Player() {
                     minimumTrackTintColor="#FFFFFF"
                     maximumTrackTintColor='#808080'
                     thumbTintColor="#FFFFFF"
+                    minimumValue={0}
+                    maximumValue={duration}
+                    value={currentTime}
+                    step={0.01}
                 />
                 <View style={styles.controls}>
                     <Pressable onPressOut={() => console.log("hi")}>
                         <Ionicons name="play-skip-back" size={32} color={buttonColor} />
                     </Pressable>
-                    <Pressable onPressOut={() => setPlay(!play)}>
-                        {play ?
+                    {/* <Pressable onPressOut={() => play}>
+                        {isPlaying ?
                             <Ionicons name="play-circle" size={64} color={buttonColor} />
                             :
                             <Ionicons name="pause-circle" size={64} color={buttonColor} />
                         }
-                    </Pressable>
+                    </Pressable> */}
+                    {isPlaying ?
+                        <Pressable onPressOut={pause}>
+                            <Ionicons name="pause-circle" size={64} color={buttonColor} />
+                        </Pressable>
+                        :
+                        <Pressable onPressOut={play}>
+                            <Ionicons name="play-circle" size={64} color={buttonColor} />
+                        </Pressable>
+                    }
                     <Pressable>
                         <Ionicons name="play-skip-forward" size={32} color={buttonColor} />
                     </Pressable>

@@ -1,15 +1,15 @@
-import * as MediaLibrary from 'expo-media-library';
+import { useAudio } from '@/src/components/audioProvider';
 import { useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { common } from "../../styles/common";
-import { searchLibrary } from '../features/scanner/scanLibrary';
+import { searchLibrary, type AudioAssetWithMetadata } from '../features/scanner/scanLibrary';
 
-type ItemProps = { title: string };
+type ItemProps = { title: string, onPress: () => void };
 
-const Item = ({ title }: ItemProps) => (
-    <View style={styles.item}>
+const Item = ({ title, onPress }: ItemProps) => (
+    <Pressable style={styles.item} onPress={onPress}>
         <Text style={styles.title}>{title}</Text>
-    </View>
+    </Pressable>
 );
 
 const DATA = [
@@ -49,13 +49,13 @@ const DATA = [
 export default function Search() {
     const [searchParam, setSearchParam] = useState("");
 
-    const [mediaFiles, setMediaFiles] = useState<MediaLibrary.Asset[]>([]);
+    const [mediaFiles, setMediaFiles] = useState<AudioAssetWithMetadata[]>([]);
 
     const handleSearch = async () => {
         const files = await searchLibrary();
         setMediaFiles(files);
     }
-
+    const { loadTrack } = useAudio();
     return (
         <View style={common.pageView} >
             <View style={styles.searchSpan}>
@@ -70,7 +70,7 @@ export default function Search() {
                 // data={DATA}
                 data={mediaFiles}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <Item title={item.filename} />}
+                renderItem={({ item }) => <Item title={item.title} onPress={() => loadTrack(item.uri, item.title,)} />}
                 keyboardDismissMode="on-drag"
                 style={styles.list}
             />
