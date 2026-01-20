@@ -1,8 +1,8 @@
 import { useAudio } from '@/src/components/audioProvider';
 import { useState } from 'react';
 import { Button, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { searchLibrary, type AudioAssetWithMetadata } from '../../functions/scanLibrary';
 import { common } from "../../styles/common";
-import { searchLibrary, type AudioAssetWithMetadata } from '../features/scanner/scanLibrary';
 
 type ItemProps = { title: string, onPress: () => void };
 

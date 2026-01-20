@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import devToolsEnhancer from 'redux-devtools-expo-dev-plugin';
-import playerReducer from './features/player/playerSlice';
-import uiReducer from './features/ui/uiSlice';
+import playerReducer from './slices/playerSlice';
+import uiReducer from './slices/uiSlice';
 
 export const store = configureStore({
     reducer: {

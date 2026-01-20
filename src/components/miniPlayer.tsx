@@ -2,8 +2,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 // import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 // redux
-import { show } from '../app/features/player/playerSlice';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { show } from '../store/slices/playerSlice';
 import { useAudio } from './audioProvider';
 
 export default function MiniPlayer() {

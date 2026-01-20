@@ -1,11 +1,12 @@
+import { useAudio } from "@/src/components/audioProvider";
+import Slider from "@react-native-community/slider";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
+import { useAppDispatch } from "../../store/hooks";
+import { setTabHeight } from "../../store/slices/uiSlice";
 import { common } from "../../styles/common";
-import { setTabHeight } from "../features/ui/uiSlice";
-import { useAppDispatch } from "../hooks";
-
 
 export default function Index() {
   const router = useRouter();
@@ -13,15 +14,43 @@ export default function Index() {
   const dispatch = useAppDispatch();
   const tabHeight = useBottomTabBarHeight();
 
+  const { setDetune, setPlaybackRate } = useAudio();
+
   useEffect(() => {
     dispatch(setTabHeight(tabHeight));
   }, [tabHeight]);
 
   return (
     <View style={common.pageView}>
-      <View>
-        {/* <AudioPlayer /> */}
-      </View>
+
+      <Slider
+        style={{
+          width: '85%',
+          marginHorizontal: 16
+        }}
+        minimumTrackTintColor="#FFFFFF"
+        maximumTrackTintColor='#808080'
+        thumbTintColor="#FFFFFF"
+        minimumValue={0.5}
+        maximumValue={5}
+        value={1}
+        onValueChange={setPlaybackRate}
+      />
+      <Slider
+        style={{
+          width: '85%',
+          marginHorizontal: 16
+        }}
+        minimumTrackTintColor="#FFFFFF"
+        maximumTrackTintColor='#808080'
+        thumbTintColor="#FFFFFF"
+        minimumValue={-1200}
+        maximumValue={1200}
+        value={0}
+        onValueChange={(setDetune)}
+      />
+      <View />
+
     </View>
   );
 }

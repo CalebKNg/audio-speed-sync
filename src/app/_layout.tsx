@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { AudioProvider } from "../components/audioProvider";
 import MiniPlayer from "../components/miniPlayer";
 import Player from "../components/player";
-import { store } from "./store";
+import { store } from "../store/store";
 
 (global as any).Buffer = Buffer; // make Buffer available globally
 export default function RootLayout() {

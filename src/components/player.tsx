@@ -6,8 +6,8 @@ import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { useAudio } from "./audioProvider";
 
 //redux
-import { hide } from "../app/features/player/playerSlice";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { hide } from "../store/slices/playerSlice";
 
 type Props = PropsWithChildren<{
     isVisible: boolean;
