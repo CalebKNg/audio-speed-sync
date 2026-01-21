@@ -39,7 +39,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const [currentTime, setCurrentTime] = useState(0);
 
     // for the transforms
-    const [playbackRate, setPlaybackRate] = useState(0);
+    const [playbackRate, setPlaybackRate] = useState(1);
     const [detune, setDetune] = useState(0);
 
     // this on on init i guess
