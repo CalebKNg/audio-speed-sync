@@ -1,13 +1,15 @@
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet, View } from 'react-native';
+import '../services/location';
+import { startLocationTracking, stopLocationTracking } from '../services/location';
 // import 'react-native-polyfill-globals/auto';
 import { Buffer } from 'buffer';
 import { Provider } from "react-redux";
 import { AudioProvider } from "../components/audioProvider";
 import MiniPlayer from "../components/miniPlayer";
 import Player from "../components/player";
-import { startLocationTracking, stopLocationTracking } from '../services/location';
+
 import { store } from "../store/store";
 
 
