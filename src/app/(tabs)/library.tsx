@@ -1,14 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import PlaylistView from '../../components/playlistView';
 import { common } from "../../styles/common";
 
 export default function Library() {
     return (
         <View style={common.pageView}>
-            <Text style={styles.text}>about me</Text>
-            <Text style={styles.text}>about me</Text>
-            <Text style={styles.text}>about me</Text>
-
-            <Text style={styles.text}>about me</Text>
+            <PlaylistView />
         </View>
     )
 }
