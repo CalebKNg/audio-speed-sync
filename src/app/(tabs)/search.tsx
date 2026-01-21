@@ -1,7 +1,7 @@
 import { useAudio } from '@/src/components/audioProvider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { searchLibrary, type AudioAssetWithMetadata } from '../../functions/scanLibrary';
+import { useAudioLibrary, type AudioAssetWithMetadata } from '../../functions/scanLibrary';
 import { common } from "../../styles/common";
 
 type ItemProps = { title: string, onPress: () => void };
@@ -51,11 +51,16 @@ export default function Search() {
 
     const [mediaFiles, setMediaFiles] = useState<AudioAssetWithMetadata[]>([]);
 
-    const handleSearch = async () => {
-        const files = await searchLibrary();
-        setMediaFiles(files);
-    }
+    // const handleSearch = async () => {
+    //     const files = await searchLibrary();
+    //     setMediaFiles(files);
+    // }
+    const { tracks, isLoading, loadLibrary } = useAudioLibrary();
     const { loadTrack } = useAudio();
+
+    useEffect(() => {
+        setMediaFiles(tracks)
+    }, [tracks])
     return (
         <View style={common.pageView} >
             <View style={styles.searchSpan}>
@@ -65,7 +70,7 @@ export default function Search() {
                     placeholder='What do you want to listen to?'
                 />
             </View>
-            <Button title="search again" onPress={handleSearch} />
+            <Button title="search again" onPress={loadLibrary} />
             <FlatList
                 // data={DATA}
                 data={mediaFiles}
