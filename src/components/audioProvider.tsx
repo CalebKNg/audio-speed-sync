@@ -16,7 +16,7 @@ interface AudioPlayerContextType {
 
     setPlaybackRate: (rate: number) => void,
     setDetune: (cents: number) => void,
-
+    setPlaybackFromSpeed: (speed: number) => void,
 }
 
 const AudioContext = createContext<AudioPlayerContextType | undefined>(undefined);
@@ -53,6 +53,27 @@ export function AudioProvider({ children }: { children: ReactNode }) {
             audioContextRef.current?.close();
         };
     }, []);
+
+    // // not sure bout this one - map speed to playback rate
+    // useEffect(() => {
+    //     const maxSpeed = 120;
+    //     const minSpeed = 0;
+    //     const maxRate = 1.5;
+    //     const minRate = 0.5
+    //     // i'll map 1.5 and 0.5 to these values respectively
+    //     const playbackCalc = Math.trunc(speed) / maxSpeed + minRate;
+    //     setPlaybackRate(playbackCalc);
+    // }, [speed])
+
+    const setPlaybackFromSpeed = useCallback((speed: number) => {
+        const maxSpeed = 120;
+        const minSpeed = 0;
+        const maxRate = 1.5;
+        const minRate = 0.5
+        // i'll map 1.5 and 0.5 to these values respectively
+        const playbackCalc = Math.trunc(speed) / maxSpeed + minRate;
+        setPlaybackRate(playbackCalc);
+    }, [])
 
     const loadTrack = useCallback(async (uri: string, title: string) => {
         try {
@@ -222,6 +243,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         seek,
         setPlaybackRate,
         setDetune,
+        setPlaybackFromSpeed
     };
     return (
         <AudioContext.Provider value={value}>

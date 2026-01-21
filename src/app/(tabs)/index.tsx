@@ -14,12 +14,18 @@ export default function Index() {
   const dispatch = useAppDispatch();
   const tabHeight = useBottomTabBarHeight();
 
-  const { setDetune, setPlaybackRate } = useAudio();
+  const { setDetune, setPlaybackRate, setPlaybackFromSpeed } = useAudio();
 
   useEffect(() => {
     dispatch(setTabHeight(tabHeight));
   }, [tabHeight]);
+
   const speed = useAppSelector(state => state.location.speed);
+
+  useEffect(() => {
+    setPlaybackFromSpeed(speed)
+  }, [speed])
+
   return (
     <View style={common.pageView}>
       <Text style={{ color: '#FFF' }}>{speed}</Text>
