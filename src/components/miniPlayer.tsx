@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     container: {
         width: '98%',
         // flex: 0.1,
-        height: 70,
+        height: 60,
         flexDirection: 'row',
         backgroundColor: '#FFF',
         borderRadius: 8,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     },
     info: {
         flexDirection: 'row',
-        flex: .5,
+        flex: 1,
         justifyContent: 'flex-start'
     },
     infoText: {
@@ -71,10 +71,11 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#25292e',
-        fontSize: 20,
+        fontSize: 15,
     },
     artist: {
         color: '#25292e',
+        fontSize: 10,
         opacity: .75,
     },
 
