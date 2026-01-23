@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import {
     Button,
-    FlatList,
     GestureResponderEvent,
     Modal,
     Pressable,
     StyleSheet,
     Text,
-    TextInput
+    TextInput,
+    View,
 } from "react-native";
 import { useAppSelector } from "../store/hooks";
 
@@ -43,23 +43,27 @@ export default function CreatePlaylistModal({ onClose, }: PlaylistModalProps) {
         <Modal animationType="slide" transparent={true} visible={visible}>
             <Pressable style={styles.overlay} onPress={handleOuterPress}>
                 <Pressable style={styles.modalContainer} onPress={handleInnerPress}>
-                    <Text>What do you want to name this new playlist?</Text>
+                    <Text style={styles.title}>Give your playlist a name</Text>
 
                     <TextInput
                         placeholder="Enter playlist name"
                         value={playlistName}
                         onChangeText={setPlaylistName}
+                        style={styles.input}
                     />
-
+                    {/* 
                     <FlatList
                         data={songs}
                         keyExtractor={(_, index) => index.toString()}
                         renderItem={({ item }) => <Text>{item}</Text>}
                         ListEmptyComponent={<Text>No songs yet</Text>}
-                    />
+                    /> */}
+                    <View style={{ flexDirection: 'row', gap: 10 }}>
+                        <Button title="Cancel" onPress={onClose} />
 
-                    <Button title="Create" onPress={handleCreate} />
-                    <Button title="Cancel" onPress={onClose} />
+                        <Button title="Create" onPress={handleCreate} />
+                    </View>
+
                 </Pressable>
             </Pressable>
         </Modal>
@@ -69,15 +73,31 @@ export default function CreatePlaylistModal({ onClose, }: PlaylistModalProps) {
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        justifyContent: "center",
+        justifyContent: "center", // push modal to the bottom
         alignItems: "center",
         backgroundColor: "rgba(0,0,0,0.3)",
     },
     modalContainer: {
         width: "90%",
-        height: "50%",
-        backgroundColor: "white",
+        height: "30%",
+        backgroundColor: "#25292e",
+        justifyContent: 'space-between',
         padding: 16,
         borderRadius: 8,
+        alignItems: 'center',
     },
+    title: {
+        color: '#FFF',
+        fontSize: 25,
+
+    },
+    input: {
+        // backgroundColor: '#FFF',
+        width: '90%',
+        fontSize: 20,
+        // justifyContent: 'center'
+        borderColor: '#FFF',
+        borderBottomWidth: 1,
+        color: '#FFF'
+    }
 });
