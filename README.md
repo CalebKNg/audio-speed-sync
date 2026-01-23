@@ -6,7 +6,8 @@
 
 
 ## UI
-![til](./assets/images/uiShowcase.gif)
+<img src="./assets/images/uiShowcase.gif" alt="Alt text" width="50%" height="50%"/>
+
 ## Audio Demo
 to come 
 
