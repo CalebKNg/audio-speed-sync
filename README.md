@@ -1,8 +1,14 @@
-# Audio Speed Syncing
+# Audio Speed Sync
 
-what if the speed at which your music played was synced with the speed at which you are driving?
+> What if the rate at which your music played was synced with your driving speed?
 
+~ no one ever
+
+
+## UI
 ![til](./assets/images/uiShowcase.gif)
+## Audio Demo
+to come 
 
 ### Features
 #### Done:
