@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import * as MediaLibrary from 'expo-media-library';
 import * as mm from 'music-metadata';
 import RNFS from 'react-native-fs';
@@ -9,6 +10,12 @@ export const createAudioAssetWithMetadata = (
     asset: { id: string; uri: string; filename: string },
     metadata: mm.IAudioMetadata
 ): AudioAssetWithMetadata => {
+    const picture = metadata.common?.picture?.[0];
+
+    // Convert picture → Base64 URI if it exists
+    const pictureUri = picture?.data
+        ? `data:${picture.format};base64,${Buffer.from(picture.data).toString('base64')}`
+        : undefined;
     return {
         id: asset.id,
         uri: asset.uri,
@@ -16,7 +23,8 @@ export const createAudioAssetWithMetadata = (
         artist: metadata.common?.artist || 'Unknown Artist',
         album: metadata.common?.album || 'Unknown Album',
         title: metadata.common?.title || asset.filename,
-        picture: metadata.common?.picture?.[0],
+        // picture: metadata.common?.picture?.[0],
+        picture: pictureUri
     };
 }
 
@@ -109,3 +117,20 @@ export const batchProcessMetadata = async (
 
     return results;
 }
+
+export const clearMetadataCache = (): number => {
+    try {
+        const allKeys = metadataStorage.getAllKeys();
+        const metadataKeys = allKeys.filter(key => key.startsWith('metadata_'));
+
+        metadataKeys.forEach(key => {
+            metadataStorage.remove(key);
+        });
+
+        console.log(`Cleared ${metadataKeys.length} metadata entries from cache`);
+        return metadataKeys.length;
+    } catch (error) {
+        console.error('Error clearing metadata cache:', error);
+        return 0;
+    }
+};

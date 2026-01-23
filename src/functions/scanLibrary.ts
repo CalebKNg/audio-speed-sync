@@ -1,7 +1,6 @@
 import * as MediaLibrary from 'expo-media-library';
-import * as mm from 'music-metadata';
 import { useState } from 'react';
-import { batchProcessMetadata } from './cache';
+import { batchProcessMetadata, clearMetadataCache } from './cache';
 
 export type AudioAssetWithMetadata = {
     id: string;
@@ -10,7 +9,8 @@ export type AudioAssetWithMetadata = {
     artist: string;
     album: string;
     title: string;
-    picture?: mm.IPicture;
+    // picture?: mm.IPicture;
+    picture?: string;
 };
 
 async function requestPermission() {
@@ -51,7 +51,12 @@ export const useAudioLibrary = () => {
             console.log(error);
             setIsLoading(false);
         }
-
     }
-    return { tracks, isLoading, loadLibrary };
+
+    const clearCache = () => {
+        clearMetadataCache();
+        loadLibrary();
+    }
+
+    return { tracks, isLoading, loadLibrary, clearCache };
 }
