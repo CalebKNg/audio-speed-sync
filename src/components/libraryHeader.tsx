@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View } from "react-native";
 import { useAppDispatch } from '../store/hooks';
-
+import { showNewPlaylist } from '../store/slices/uiSlice';
 
 export default function LibraryHeader() {
     const dispatch = useAppDispatch();
@@ -11,7 +11,7 @@ export default function LibraryHeader() {
                 <Ionicons name="options" size={32} style={{ paddingHorizontal: 16, color: '#FFF', }} />
             </Pressable>
 
-            <Pressable >
+            <Pressable onPress={() => (dispatch(showNewPlaylist()))}>
                 <Ionicons name="add" size={32} style={{ paddingHorizontal: 16, color: '#FFF', }} />
             </Pressable>
         </View>

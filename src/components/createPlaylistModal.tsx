@@ -9,6 +9,7 @@ import {
     Text,
     TextInput
 } from "react-native";
+import { useAppSelector } from "../store/hooks";
 
 interface Playlist {
     name: string;
@@ -16,15 +17,15 @@ interface Playlist {
 }
 
 interface PlaylistModalProps {
-    visible: boolean;
+    // visible: boolean;
     onClose: () => void;
     // onCreate: (playlist: Playlist) => void;
 }
 
-export default function PlaylistModal({ visible, onClose, }: PlaylistModalProps) {
+export default function CreatePlaylistModal({ onClose, }: PlaylistModalProps) {
     const [playlistName, setPlaylistName] = useState<string>("");
     const [songs, setSongs] = useState<string[]>([]);
-
+    const visible = useAppSelector(state => state.ui.newPlaylistVisible)
     const handleOuterPress = () => onClose();
 
     const handleInnerPress = (e: GestureResponderEvent) => {
@@ -42,7 +43,7 @@ export default function PlaylistModal({ visible, onClose, }: PlaylistModalProps)
         <Modal animationType="slide" transparent={true} visible={visible}>
             <Pressable style={styles.overlay} onPress={handleOuterPress}>
                 <Pressable style={styles.modalContainer} onPress={handleInnerPress}>
-                    <Text>Create New Playlist</Text>
+                    <Text>What do you want to name this new playlist?</Text>
 
                     <TextInput
                         placeholder="Enter playlist name"
