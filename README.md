@@ -7,6 +7,7 @@
 
 ## UI 
 i tried my best
+
 <img src="./assets/images/uiShowcase.gif" alt="Alt text" width="50%" height="50%"/>
 
 ## Audio Demo
