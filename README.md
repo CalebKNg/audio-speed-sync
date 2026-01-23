@@ -2,10 +2,11 @@
 
 > What if the rate at which your music played was synced with your driving speed?
 
-~ no one ever
+~ no one
 
 
-## UI
+## UI 
+i tried my best
 <img src="./assets/images/uiShowcase.gif" alt="Alt text" width="50%" height="50%"/>
 
 ## Audio Demo
