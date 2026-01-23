@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text } from 'react-native';
 import { Playlist, PlaylistCache } from '../functions/playlists';
+import { useAppSelector } from '../store/hooks';
 
 type ItemProps = { title: string, onPress: () => void };
 
@@ -10,21 +11,30 @@ const Item = ({ title, onPress }: ItemProps) => (
     </Pressable>
 );
 
-export default function PlaylistView() {
+interface PlaylistViewProps {
+    onPlaylistSelect: (playlistId: string) => void;
+}
+
+export default function PlaylistView({ onPlaylistSelect }: PlaylistViewProps) {
 
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
+    const playlistFlag = useAppSelector(state => state.ui.playlistFlag);
 
-    // on mount?
     useEffect(() => {
         const allPlaylists = PlaylistCache.getAll('Recents');
         setPlaylists(allPlaylists);
-    }, [])
+    }, [playlistFlag])
 
     return (
         <FlatList
             data={playlists}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => <Item title={item.name} onPress={() => { }} />}
+            renderItem={({ item }) => (
+                <Item
+                    title={item.name}
+                    onPress={() => onPlaylistSelect(item.id)}
+                />
+            )}
             style={styles.list}
             contentContainerStyle={{ paddingBottom: 80 }}
         />

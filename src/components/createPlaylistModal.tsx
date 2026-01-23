@@ -9,12 +9,10 @@ import {
     TextInput,
     View,
 } from "react-native";
-import { useAppSelector } from "../store/hooks";
+import { PlaylistCache } from '../functions/playlists';
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { updatePlaylistFlag } from "../store/slices/uiSlice";
 
-interface Playlist {
-    name: string;
-    songs: string[];
-}
 
 interface createPlaylistModalProps {
     // visible: boolean;
@@ -24,8 +22,8 @@ interface createPlaylistModalProps {
 
 export default function CreatePlaylistModal({ onClose, }: createPlaylistModalProps) {
     const [playlistName, setPlaylistName] = useState<string>("");
-    const [songs, setSongs] = useState<string[]>([]);
     const visible = useAppSelector(state => state.ui.newPlaylistVisible)
+    const dispatch = useAppDispatch();
     const handleOuterPress = () => onClose();
 
     const handleInnerPress = (e: GestureResponderEvent) => {
@@ -34,8 +32,10 @@ export default function CreatePlaylistModal({ onClose, }: createPlaylistModalPro
 
     const handleCreate = () => {
         // onCreate({ name: playlistName, songs });
+        PlaylistCache.create(playlistName);
+        dispatch(updatePlaylistFlag());
         setPlaylistName("");
-        setSongs([]);
+
         onClose();
     };
 
