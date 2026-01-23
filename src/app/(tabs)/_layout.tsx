@@ -1,3 +1,4 @@
+import LibraryHeader from "@/src/components/libraryHeader";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 
@@ -14,6 +15,7 @@ export default function RootLayout() {
                 tabBarStyle: {
                     backgroundColor: "#25292e"
                 },
+
             }}
         >
             <Tabs.Screen
@@ -39,8 +41,11 @@ export default function RootLayout() {
                 options={{
                     title: "Library",
                     tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'list' : 'list-outline'} color={color} size={24} />
-                    )
+                        <Ionicons name={focused ? 'albums' : 'albums-outline'} color={color} size={24} />
+                    ),
+                    headerRight: () => (
+                        <LibraryHeader />
+                    ),
                 }}
             />
             <Tabs.Screen
