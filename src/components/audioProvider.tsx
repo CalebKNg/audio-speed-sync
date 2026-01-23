@@ -7,6 +7,7 @@ interface AudioPlayerContextType {
     duration: number,
     currentTrack: string,
     currentTime: number,
+    isNormalSpeedLocked: boolean,
     // methods
     loadTrack: (uri: string, title: string) => Promise<void>,
     play: () => void,
@@ -17,6 +18,7 @@ interface AudioPlayerContextType {
     setPlaybackRate: (rate: number) => void,
     setDetune: (cents: number) => void,
     setPlaybackFromSpeed: (speed: number) => void,
+    toggleNormalSpeedLock: () => void,
 }
 
 const AudioContext = createContext<AudioPlayerContextType | undefined>(undefined);
@@ -41,6 +43,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     // for the transforms
     const [playbackRate, setPlaybackRate] = useState(1);
     const [detune, setDetune] = useState(0);
+    const [isNormalSpeedLocked, setIsNormalSpeedLocked] = useState(false);
 
     // this on on init i guess
     useEffect(() => {
@@ -54,18 +57,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         };
     }, []);
 
-    // // not sure bout this one - map speed to playback rate
-    // useEffect(() => {
-    //     const maxSpeed = 120;
-    //     const minSpeed = 0;
-    //     const maxRate = 1.5;
-    //     const minRate = 0.5
-    //     // i'll map 1.5 and 0.5 to these values respectively
-    //     const playbackCalc = Math.trunc(speed) / maxSpeed + minRate;
-    //     setPlaybackRate(playbackCalc);
-    // }, [speed])
+    const toggleNormalSpeedLock = useCallback(() => {
+        setIsNormalSpeedLocked(prev => !prev);
+    }, []);
 
     const setPlaybackFromSpeed = useCallback((speed: number) => {
+        if (isNormalSpeedLocked) {
+            setPlaybackRate(1);
+            return;
+        }
         const maxSpeed = 120;
         const minSpeed = 0;
         const maxRate = 1.5;
@@ -73,7 +73,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         // i'll map 1.5 and 0.5 to these values respectively
         const playbackCalc = Math.trunc(speed) / maxSpeed + minRate;
         setPlaybackRate(playbackCalc);
-    }, [])
+    }, [isNormalSpeedLocked])
 
     const loadTrack = useCallback(async (uri: string, title: string) => {
         try {
@@ -130,7 +130,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         const source = await ctx.createBufferSource();
 
         source.buffer = audioBufferRef.current;
-        source.playbackRate.value = playbackRate;
+        source.playbackRate.value = isNormalSpeedLocked ? 1 : playbackRate;
         source.detune.value = detune;
         // source.loop = loop;
         // source.loopStart = loopStart;
@@ -216,7 +216,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         const RAMP_TIME = 0.05;
 
         source.playbackRate.setValueAtTime(
-            playbackRate,
+            isNormalSpeedLocked ? 1 : playbackRate,
             ctx.currentTime + RAMP_TIME
         );
         source.detune.setValueAtTime(
@@ -234,6 +234,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         currentTrack,
         duration,
         currentTime,
+        isNormalSpeedLocked,
         // playbackRate,
         // detune,
         loadTrack,
@@ -243,7 +244,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         seek,
         setPlaybackRate,
         setDetune,
-        setPlaybackFromSpeed
+        setPlaybackFromSpeed,
+        toggleNormalSpeedLock
     };
     return (
         <AudioContext.Provider value={value}>
