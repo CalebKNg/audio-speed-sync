@@ -30,9 +30,17 @@ export default function Player() {
     const [localTime, setLocalTime] = useState(currentTime);
     const [isSliding, setIsSliding] = useState(false);
 
-
     const dispatch = useAppDispatch();
+
     const isExpanded = useAppSelector(state => state.player.visible);
+
+    // grab information from global redux store
+    const { currentArtist, currentTrack, currentPicture } = useAppSelector(state => ({
+        currentArtist: state.player.currentArtist,
+        currentTrack: state.player.currentTrack,
+        currentPicture: state.player.currentPicture,
+    }));
+
 
     return (
         // return modal so it sits on top
@@ -46,10 +54,10 @@ export default function Player() {
                     </Pressable>
                 </View>
                 {/*  main image */}
-                <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
+                <Image source={currentPicture ? { uri: currentPicture } : require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
                 <View style={styles.trackInfo}>
-                    <Text style={styles.title}>Meidei</Text>
-                    <Text style={styles.artist}>Radwimps</Text>
+                    <Text style={styles.title}>{currentTrack}</Text>
+                    <Text style={styles.artist}>{currentArtist}</Text>
                 </View>
                 {/* scrubber */}
                 <Slider

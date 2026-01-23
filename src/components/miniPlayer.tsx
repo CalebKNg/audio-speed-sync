@@ -8,15 +8,24 @@ import { useAudio } from './audioProvider';
 
 export default function MiniPlayer() {
     const dispatch = useAppDispatch();
-    const { currentTrack, isPlaying, play, pause } = useAudio();
+    const { isPlaying, play, pause } = useAudio();
+
+    // grab information from global redux store
+    const { currentArtist, currentTrack, currentPicture } = useAppSelector(state => ({
+        currentArtist: state.player.currentArtist,
+        currentTrack: state.player.currentTrack,
+        currentPicture: state.player.currentPicture,
+    }));
+
     const tabHeight = useAppSelector(state => state.ui.tabHeight);
+
     return (
         <Pressable style={[styles.container, { bottom: tabHeight }]} onPress={() => dispatch(show())}>
             <View style={styles.info}>
-                <Image source={require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
+                <Image source={currentPicture ? { uri: currentPicture } : require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
                 <View style={styles.infoText} >
                     <Text style={styles.title}>{currentTrack}</Text>
-                    <Text>Radwimps</Text>
+                    <Text>{currentArtist}</Text>
                 </View>
             </View>
 
