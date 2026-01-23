@@ -13,6 +13,10 @@ export default function Library() {
     const dispatch = useAppDispatch()
     const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
     const [showAddSongs, setShowAddSongs] = useState(false);
+
+    // cuz the tracklist wasnt refreshing
+    const [refreshKey, setRefreshKey] = useState(0);
+
     return (
         <View style={common.pageView}>
             {/* <Button title="hi" onPress={() => dispatch(showNewPlaylist())} /> */}
@@ -23,11 +27,19 @@ export default function Library() {
 
 
             <CreatePlaylistModal onClose={() => dispatch(hideNewPlaylist())} />
-            <PlaylistModal playlistId={selectedPlaylistId} onClose={() => dispatch(hidePlaylist())} onAddSongs={() => setShowAddSongs(true)} />
+            <PlaylistModal
+                playlistId={selectedPlaylistId}
+                onClose={() => dispatch(hidePlaylist())}
+                onAddSongs={() => setShowAddSongs(true)}
+                refreshTrigger={refreshKey}
+            />
             <AddSongsModal
                 playlistId={selectedPlaylistId}
                 visible={showAddSongs}
-                onClose={() => setShowAddSongs(false)}
+                onClose={() => {
+                    setShowAddSongs(false);
+                    setRefreshKey(prev => prev + 1);
+                }}
             />
         </View>
     )

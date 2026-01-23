@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useState } from "react";
 import {
     FlatList,
@@ -13,13 +14,15 @@ import { Playlist, PlaylistCache } from "../functions/playlists";
 import { AudioAssetWithMetadata } from "../functions/scanLibrary";
 import { useAppSelector } from "../store/hooks";
 
+
 interface PlaylistDisplayModalProps {
     playlistId: string;
     onClose: () => void;
     onAddSongs: () => void;
+    refreshTrigger?: number;
 }
 
-export default function PlaylistDisplayModal({ playlistId, onClose, onAddSongs }: PlaylistDisplayModalProps) {
+export default function PlaylistDisplayModal({ playlistId, onClose, onAddSongs, refreshTrigger }: PlaylistDisplayModalProps) {
     const [playlist, setPlaylist] = useState<Playlist | null>(null);
     const [tracks, setTracks] = useState<AudioAssetWithMetadata[]>([]);
     const visible = useAppSelector(state => state.ui.playlistVisible);
@@ -28,7 +31,7 @@ export default function PlaylistDisplayModal({ playlistId, onClose, onAddSongs }
         if (visible && playlistId) {
             loadPlaylistData();
         }
-    }, [visible, playlistId]);
+    }, [visible, playlistId, refreshTrigger]);
 
     const loadPlaylistData = () => {
         const data = PlaylistCache.getTracks(playlistId);
@@ -59,18 +62,29 @@ export default function PlaylistDisplayModal({ playlistId, onClose, onAddSongs }
                     <Text style={styles.trackArtist}>{item.artist}</Text>
                 </View>
                 <Pressable onPress={() => removeTrack(item.id)}>
-                    <Text style={styles.removeButton}>×</Text>
+                    <Text style={styles.removeButton}><Ionicons name="remove" /></Text>
                 </Pressable>
             </View>
         );
     };
 
     return (
-        <Modal animationType="slide" transparent={true} visible={visible}>
+        <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
             <Pressable style={styles.overlay} onPress={onClose}>
                 <Pressable style={styles.modal} onPress={handleInnerPress}>
                     <Text style={styles.title}>{playlist?.name || 'Playlist'}</Text>
+
+
                     <Text style={styles.subtitle}>{tracks.length} songs</Text>
+                    <View style={styles.header}>
+                        <Pressable onPress={onAddSongs}>
+                            <Ionicons name="add" size={32} style={{ paddingHorizontal: 16, color: '#FFF', }} />
+                        </Pressable>
+                        <Pressable>
+                            <Ionicons name="play-circle" size={48} style={{ paddingHorizontal: 16, color: '#FFF', }} />
+                        </Pressable>
+
+                    </View>
 
                     <FlatList
                         data={tracks}
@@ -82,9 +96,9 @@ export default function PlaylistDisplayModal({ playlistId, onClose, onAddSongs }
                         }
                     />
 
-                    <Pressable style={styles.addButton} onPress={onAddSongs}>
+                    {/* <Pressable style={styles.addButton} onPress={onAddSongs}>
                         <Text style={styles.addButtonText}>+ Add Songs</Text>
-                    </Pressable>
+                    </Pressable> */}
 
                     <Pressable style={styles.closeButton} onPress={onClose}>
                         <Text style={styles.closeText}>Close</Text>
@@ -114,6 +128,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 5,
+    },
+    header: {
+        flexDirection: 'row',
+        // alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 16
     },
     subtitle: {
         color: '#888',
@@ -149,10 +170,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     removeButton: {
-        color: '#FF5252',
+        // color: '#FF5252',
+        color: '#FFF',
         fontSize: 30,
         fontWeight: 'bold',
         paddingHorizontal: 10,
+        marginLeft: 5
     },
     emptyText: {
         color: '#888',
