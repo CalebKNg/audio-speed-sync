@@ -1,5 +1,5 @@
 import { useAudio } from "@/src/components/audioProvider";
-import Slider from "@react-native-community/slider";
+// import Slider from "@react-native-community/slider";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -28,33 +28,9 @@ export default function Index() {
 
   return (
     <View style={common.pageView}>
-      <Text style={{ color: '#FFF' }}>{speed}</Text>
-      <Slider
-        style={{
-          width: '85%',
-          marginHorizontal: 16
-        }}
-        minimumTrackTintColor="#FFFFFF"
-        maximumTrackTintColor='#808080'
-        thumbTintColor="#FFFFFF"
-        minimumValue={0.5}
-        maximumValue={5}
-        value={1}
-        onValueChange={setPlaybackRate}
-      />
-      <Slider
-        style={{
-          width: '85%',
-          marginHorizontal: 16
-        }}
-        minimumTrackTintColor="#FFFFFF"
-        maximumTrackTintColor='#808080'
-        thumbTintColor="#FFFFFF"
-        minimumValue={-1200}
-        maximumValue={1200}
-        value={0}
-        onValueChange={(setDetune)}
-      />
+      <Text style={{ color: '#FFF' }}>work in progress lmao</Text>
+
+      {/* <Text style={{ color: '#FFF' }}>{speed}</Text> */}
       <View />
 
     </View>
