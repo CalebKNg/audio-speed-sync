@@ -19,8 +19,12 @@ export default function MiniPlayer() {
 
     const tabHeight = useAppSelector(state => state.ui.tabHeight);
 
+    // hide until a song is selected
+    const visible = currentTrack != null;
+
     return (
-        <Pressable style={[styles.container, { bottom: tabHeight }]} onPress={() => dispatch(show())}>
+
+        <Pressable style={[styles.container, { bottom: tabHeight }, !visible && { display: 'none' }]} onPress={() => dispatch(show())}>
             <View style={styles.info}>
                 <Image source={currentPicture ? { uri: currentPicture } : require('@/assets//images//612I5v0KlEL.jpg')} style={styles.cover} />
                 <View style={styles.infoText} >
