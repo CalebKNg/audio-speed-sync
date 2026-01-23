@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useState } from "react";
 import {
     FlatList,
@@ -12,6 +13,7 @@ import {
 } from "react-native";
 import { PlaylistCache } from "../functions/playlists";
 import { AudioAssetWithMetadata, useAudioLibrary } from "../functions/scanLibrary";
+
 
 interface AddSongsModalProps {
     playlistId: string;
@@ -38,10 +40,13 @@ export default function AddSongsModal({ playlistId, visible, onClose }: AddSongs
     }, [tracks]);
 
     useEffect(() => {
+        const tracksToFilter = allTracks.filter(
+            track => !playlistTrackIds.includes(track.id) // remove existing playlist tracks
+        );
         if (searchParam.trim() === "") {
-            setFilteredTracks(allTracks);
+            setFilteredTracks(tracksToFilter);
         } else {
-            const filtered = allTracks.filter(item =>
+            const filtered = tracksToFilter.filter(item =>
                 item.title.toLowerCase().includes(searchParam.toLowerCase()) ||
                 item.artist.toLowerCase().includes(searchParam.toLowerCase())
             );
@@ -85,13 +90,13 @@ export default function AddSongsModal({ playlistId, visible, onClose }: AddSongs
                     <Text style={styles.trackTitle}>{item.title}</Text>
                     <Text style={styles.trackArtist}>{item.artist}</Text>
                 </View>
-                <Text style={styles.checkbox}>{inPlaylist ? '✓' : '+'}</Text>
+                <Text style={styles.checkbox}>{inPlaylist ? <Ionicons name='checkmark' size={15} /> : <Ionicons size={15} name='add' />}</Text>
             </Pressable>
         );
     };
 
     return (
-        <Modal animationType="slide" transparent={true} visible={visible}>
+        <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
             <Pressable style={styles.overlay} onPress={onClose}>
                 <Pressable style={styles.modal} onPress={handleInnerPress}>
                     <Text style={styles.title}>Add Songs</Text>
@@ -175,9 +180,10 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     checkbox: {
-        color: '#4CAF50',
-        fontSize: 20,
-        fontWeight: 'bold',
+        // color: '#4CAF50',
+        color: '#FFF',
+        marginLeft: 15,
+        marginRight: 5
     },
     closeButton: {
         backgroundColor: '#555',
