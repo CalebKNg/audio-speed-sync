@@ -16,13 +16,13 @@ interface Playlist {
     songs: string[];
 }
 
-interface PlaylistModalProps {
+interface createPlaylistModalProps {
     // visible: boolean;
     onClose: () => void;
     // onCreate: (playlist: Playlist) => void;
 }
 
-export default function CreatePlaylistModal({ onClose, }: PlaylistModalProps) {
+export default function CreatePlaylistModal({ onClose, }: createPlaylistModalProps) {
     const [playlistName, setPlaylistName] = useState<string>("");
     const [songs, setSongs] = useState<string[]>([]);
     const visible = useAppSelector(state => state.ui.newPlaylistVisible)
@@ -43,7 +43,7 @@ export default function CreatePlaylistModal({ onClose, }: PlaylistModalProps) {
         <Modal animationType="slide" transparent={true} visible={visible}>
             <Pressable style={styles.overlay} onPress={handleOuterPress}>
                 <Pressable style={styles.modalContainer} onPress={handleInnerPress}>
-                    <Text style={styles.title}>Give your playlist a name</Text>
+                    <Text style={styles.title}>Create Playlist</Text>
 
                     <TextInput
                         placeholder="Enter playlist name"
