@@ -8,7 +8,7 @@
 ## UI 
 i tried my best
 
-<img src="./assets/images/uiShowcase.gif" alt="Alt text" width="50%" height="50%"/>
+![uiShowcase](https://github.com/user-attachments/assets/676a924c-4f85-4f75-aba5-1b14d10a6b1c)
 
 ## Audio Demo
 
