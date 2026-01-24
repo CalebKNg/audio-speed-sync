@@ -11,7 +11,8 @@ i tried my best
 <img src="./assets/images/uiShowcase.gif" alt="Alt text" width="50%" height="50%"/>
 
 ## Audio Demo
-to come 
+
+https://github.com/user-attachments/assets/ebf444de-b09a-4bfe-814a-ca675173c7b1
 
 ### Features
 #### Done:
@@ -26,3 +27,6 @@ to come
 - Editing metadata 
 - Home page 🤦
 - IOS support i dont have an iphone so i dont want to do it sorry 😔
+
+
+
